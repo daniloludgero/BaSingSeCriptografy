@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BaSingSeCriptografy — RSD-S v4 Interactive Cryptanalysis Laboratory</title>
+  <meta name="description" content="Interactive cryptographic research laboratory for RSD-S v4 (Riemann Spectral Diffusion): GF(2^16) inversion S-Box, 32x32 Cauchy MDS diffusion, Z3 SMT proofs, and DIMACS SAT/CNF benchmarks." />
+  <link rel="stylesheet" href="lab/styles.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main laboratory controls</a>
+
+  <div class="disclaimer-banner" role="region" aria-label="Research Prototype Security Disclaimer">
+    <div class="disclaimer-inner">
+      <span class="badge-caution">Research Prototype</span>
+      <span>
+        <strong>NOT Audited • Do NOT Use in Production:</strong>
+        RSD-S v4 is an experimental cryptographic diffusion primitive &amp; formal verification testbed.
+        Passing statistical avalanche tests and single-characteristic bounds does not constitute a formal proof of security.
+      </span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div>
+          <p class="eyebrow">BaSingSeCriptografy • Cryptographic Engineering &amp; SAT/SMT Workbench</p>
+          <h1>RSD-S v4 — Riemann Spectral Diffusion Laboratory</h1>
+          <p class="subtitle">
+            Interactive inspection of the 512-bit keyed SPN over 𝔽<sub>p</sub>² (p = 2<sup>255</sup> − 19),
+            documenting the empirical and algebraic progression from <strong>v0 (9.34% linear failure)</strong>
+            to <strong>v4 (50.31% avalanche, Branch Number 33, DDT Uniformity 4)</strong>.
+          </p>
+        </div>
+        <nav class="header-actions" aria-label="Repository navigation">
+          <a class="btn btn-primary" href="https://github.com/daniloludgero/BaSingSeCriptografy">GitHub Repository</a>
+          <a class="btn" href="#simulator-section">Bit-Flip Simulator</a>
+          <a class="btn" href="#ddt-section">GF(2¹⁶) DDT Verifier</a>
+          <a class="btn" href="#kat-section">KAT Vectors</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <div id="lab-live-status" class="skip-link" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Key Telemetry Strip -->
+    <section aria-label="Verified v4 Cryptographic Metrics" class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Measured Avalanche (v4)</div>
+        <div class="kpi-value emerald">50.31% / 49.53%</div>
+        <p class="kpi-detail">Pre-SHA (σ = 1.87%) &amp; Post-SHA (σ = 3.34%) across full 255-bit F_p inputs</p>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Cauchy MDS 32×32 Branch #</div>
+        <div class="kpi-value cyan">B = 33 (Max)</div>
+        <p class="kpi-detail">Rank 32/32 over GF(2¹⁶); ≥ 66 active S-boxes in 4 rounds (≤ 2⁻⁹²⁴ bound)</p>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">GF(2¹⁶) S-Box Uniformity</div>
+        <div class="kpi-value emerald">DDT = 4 (2⁻¹⁴)</div>
+        <p class="kpi-detail">Bijection (65,536/65,536); algebraic degree-2 proof + 4 Z3 SMT witnesses</p>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Synthesized MDS Circuit</div>
+        <div class="kpi-value cyan">45,050 XORs</div>
+        <p class="kpi-detail">65.57% reduction from 130,848 naive gates; exported to DIMACS CNF</p>
+      </div>
+    </section>
+
+    <div class="lab-grid">
+      <!-- Panel 1: Interactive Bit-Flip & Fragmentation Simulator -->
+      <section id="simulator-section" class="panel panel-full" aria-labelledby="sim-heading">
+        <div class="panel-header">
+          <h2 id="sim-heading">1. Interactive F_p Bit-Flip &amp; Cauchy MDS Diffusion Simulator (v1 Bug vs v4 Fix)</h2>
+          <span class="tag">Live GF(2¹⁶) Poly 0x1100B Engine</span>
+        </div>
+
+        <p>
+          In <code>v1–v3</code>, inputs <code>x, y ∈ [0, 2²⁵⁵ − 19)</code> were fragmented into only 8 slices of 16 bits (128 bits),
+          silently discarding bits <code>128..254</code>. Select any bit below to inspect how <code>v4</code> maps it across the
+          32-word (512-bit) internal state and diffuses it through the 32×32 Cauchy MDS matrix in Round 1.
+        </p>
+
+        <div class="controls-row">
+          <div class="field-group">
+            <label for="bit-pos-input">Flipped Input Bit Position (0 to 254)</label>
+            <input id="bit-pos-input" type="number" min="0" max="254" value="200" />
+            <div class="preset-pills" role="group" aria-label="Bit position presets">
+              <button type="button" class="pill-btn" data-bit-preset="0" aria-pressed="false">Bit 0 (Low)</button>
+              <button type="button" class="pill-btn" data-bit-preset="63" aria-pressed="false">Bit 63</button>
+              <button type="button" class="pill-btn" data-bit-preset="127" aria-pressed="false">Bit 127 (v1 Limit)</button>
+              <button type="button" class="pill-btn" data-bit-preset="128" aria-pressed="false">Bit 128 (First Dropped in v1)</button>
+              <button type="button" class="pill-btn" data-bit-preset="200" aria-pressed="true">Bit 200 (High Bit Demo)</button>
+              <button type="button" class="pill-btn" data-bit-preset="254" aria-pressed="false">Bit 254 (Max F_p Bit)</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="scalar-select">Target F_p Input Scalar</label>
+            <select id="scalar-select">
+              <option value="0">Scalar x (Words W[0] .. W[15])</option>
+              <option value="1">Scalar y (Words W[16] .. W[31])</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="comparison-split">
+          <div id="v1-truncation-status" class="status-box fail" role="status"></div>
+          <div id="v4-coverage-status" class="status-box pass" role="status"></div>
+        </div>
+
+        <h3>Round-1 Output Difference Across All 32 State Words After 32×32 Cauchy MDS</h3>
+        <div id="state-word-grid" class="word-grid" aria-label="32-word state difference matrix"></div>
+      </section>
+
+      <!-- Panel 2: GF(2^16) Inversion S-Box & Z3 DDT Witness Verifier -->
+      <section id="ddt-section" class="panel" aria-labelledby="ddt-heading">
+        <div class="panel-header">
+          <h2 id="ddt-heading">2. GF(2¹⁶) S-Box DDT Uniformity = 4 Verifier</h2>
+          <span class="tag">Algebraic + Z3 SMT</span>
+        </div>
+        <p>
+          For any non-zero input difference <code>Δ_in ∈ [1, 65535]</code>, the maximum-probability output difference is
+          <code>Δ_out = Inv(Δ_in)</code>, achieved by exactly 4 witnesses:
+          <code>{0, Δ_in, Δ_in·ω, Δ_in·(ω⊕1)}</code> where <code>ω = 0x015E</code> solves <code>x² + x + 1 = 0</code> in GF(2¹⁶).
+        </p>
+
+        <div class="field-group">
+          <label for="ddt-delta-input">Input Difference Δ_in (1 to 65535)</label>
+          <input id="ddt-delta-input" type="number" min="1" max="65535" value="1" />
+        </div>
+
+        <p id="ddt-summary-line" class="mono" style="font-size: 0.8125rem; color: var(--accent-cyan);"></p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Witness x</th>
+                <th scope="col">Inv(x)</th>
+                <th scope="col">Inv(x ⊕ Δ_in)</th>
+                <th scope="col">Δ_out</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="ddt-witness-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel 3: Canonical Known-Answer Test (KAT) Vectors -->
+      <section id="kat-section" class="panel" aria-labelledby="kat-heading">
+        <div class="panel-header">
+          <h2 id="kat-heading">3. Official v4 Known-Answer Test (KAT) Vectors</h2>
+          <span class="tag">testes/vetores_v4.json</span>
+        </div>
+        <p>
+          Deterministic reference vectors locking the 4-round <code>diffuse_rsd_s_final(x, y, s, n_sess)</code> contract.
+          Verify locally via <code>python3 ferramentas/rsd_cli.py kat</code>.
+        </p>
+
+        <div class="field-group">
+          <label for="kat-vector-select">Select Official KAT Vector</label>
+          <select id="kat-vector-select">
+            <option value="0">1. zeros (All-zero baseline)</option>
+            <option value="1">2. sequencial (x=1, y=2, sequential key)</option>
+            <option value="2">3. bits_altos (2^254 &amp; 2^253 high-bit boundary)</option>
+            <option value="3">4. limites_do_campo (p-1 &amp; p-2 Curve25519 prime boundary)</option>
+          </select>
+        </div>
+
+        <div id="kat-vector-details" style="margin-top: 1rem; font-size: 0.85rem; display: grid; gap: 0.4rem;"></div>
+      </section>
+
+      <!-- Panel 4: Multi-Round Wide-Trail & Concrete Trail Summary -->
+      <section class="panel panel-full" aria-labelledby="bounds-heading">
+        <div class="panel-header">
+          <h2 id="bounds-heading">4. Multi-Round Wide-Trail Bounds vs. Concrete Differential Trail Search</h2>
+          <span class="tag">Branch Number 33 • Z3 &amp; CNF Verified</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Rounds</th>
+                <th scope="col">Pre-SHA Avalanche</th>
+                <th scope="col">Post-SHA Avalanche</th>
+                <th scope="col">Min Active S-Boxes (Wide-Trail DP)</th>
+                <th scope="col">Single-Characteristic Diff Bound</th>
+                <th scope="col">Single-Characteristic Linear Bound</th>
+                <th scope="col">Best Discovered Concrete Trail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono"><strong>4 (Official v4)</strong></td>
+                <td class="mono">50.02% (σ 2.37%)</td>
+                <td class="mono">50.22% (σ 3.69%)</td>
+                <td class="mono">66</td>
+                <td class="mono">≤ 2⁻⁹²⁴</td>
+                <td class="mono">≤ 2⁻⁴⁶²</td>
+                <td class="mono">2⁻¹⁴³⁹ (profile: 1, 32, 31, 32)</td>
+              </tr>
+              <tr>
+                <td class="mono">6 (Experimental)</td>
+                <td class="mono">49.88% (σ 2.36%)</td>
+                <td class="mono">50.89% (σ 2.87%)</td>
+                <td class="mono">99</td>
+                <td class="mono">≤ 2⁻¹³⁸⁶</td>
+                <td class="mono">≤ 2⁻⁶⁹³</td>
+                <td class="mono">≤ 2⁻²²⁴⁰ (single-active path)</td>
+              </tr>
+              <tr>
+                <td class="mono">8 (Experimental)</td>
+                <td class="mono">48.72% (σ 1.81%)</td>
+                <td class="mono">49.44% (σ 2.43%)</td>
+                <td class="mono">132</td>
+                <td class="mono">≤ 2⁻¹⁸⁴⁸</td>
+                <td class="mono">≤ 2⁻⁹²⁴</td>
+                <td class="mono">≤ 2⁻³¹³⁶ (single-active path)</td>
+              </tr>
+              <tr>
+                <td class="mono">10 (Experimental)</td>
+                <td class="mono">48.96% (σ 1.66%)</td>
+                <td class="mono">50.02% (σ 3.66%)</td>
+                <td class="mono">165</td>
+                <td class="mono">≤ 2⁻²³¹⁰</td>
+                <td class="mono">≤ 2⁻¹¹⁵⁵</td>
+                <td class="mono">≤ 2⁻⁴⁰³² (single-active path)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <p>
+      <strong>BaSingSeCriptografy (RSD-S v0.4.1)</strong> • Authored by Danilo Ludgero •
+      Released under the <a href="https://github.com/daniloludgero/BaSingSeCriptografy/blob/main/LICENSE">MIT License</a> •
+      Respecting all scientific honesty invariants in <code>especificacao/RESTRICOES_DE_PROJETO.md</code>.
+    </p>
+  </footer>
+
+  <script src="lab/app.js"></script>
+</body>
+</html>
