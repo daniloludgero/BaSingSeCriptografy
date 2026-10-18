@@ -17,7 +17,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "implementacao"))
 
-from analise_wide_trail import bound_for_rounds  # noqa: E402
+from analise_wide_trail import bound_for_rounds, min_active_sboxes_dp  # noqa: E402
 from rsd_s_v1_original import diffuse_rsd_s as diffuse_v1_original  # noqa: E402
 from rsd_s_v4_final import (  # noqa: E402
     P_CURVE25519,
@@ -93,11 +93,12 @@ def cmd_bounds(rounds_list: list[int], as_json: bool = False) -> int:
             print(f"Error: rounds must be in 1..255 (got {r})", file=sys.stderr)
             return 2
         b = bound_for_rounds(r)
+        _, pattern = min_active_sboxes_dp(r)
         rows.append(
             {
                 "rounds": b.rounds,
                 "min_active_sboxes": b.min_active_sboxes,
-                "activity_pattern": list(b.activity_pattern),
+                "activity_pattern": list(pattern),
                 "diff_log2_prob_upper": b.differential_log2_probability_upper,
                 "linear_log2_corr_upper": b.linear_log2_correlation_upper,
                 "linear_log2_bias_upper": b.linear_log2_bias_upper,
