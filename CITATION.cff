@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "BaSingSeCriptografy — RSD-S (Riemann Spectral Diffusion): Cryptographic Primitive Prototype & Formal Cryptanalysis Workbench"
+message: "If you use this cryptographic research package, CNF/SMT models, or test vectors in your research or pedagogy, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: "Ludgero"
+    given-names: "Danilo"
+repository-code: "https://github.com/daniloludgero/BaSingSeCriptografy"
+url: "https://daniloludgero.github.io/BaSingSeCriptografy/"
+license: MIT
+version: "0.4.1"
+date-released: "2026-10-18"
+keywords:
+  - cryptography
+  - cryptanalysis
+  - diffusion-primitive
+  - mds-matrix
+  - cauchy-matrix
+  - s-box
+  - finite-fields
+  - sat-solver
+  - smt-solver
+  - z3
+  - wide-trail-strategy
+abstract: >-
+  RSD-S (Riemann Spectral Diffusion) is an experimental keyed 512-bit SPN
+  diffusion and hashing research prototype operating over pairs of elements in
+  F_p (p = 2^255 - 19). It documents the complete empirical and algebraic
+  evolution from v0 (linear transformation) through v4 (16x16-bit full
+  fragmentation per input, GF(2^16) inversion S-box with proven differential
+  uniformity 4, and 32x32 Cauchy MDS diffusion with branch number 33),
+  accompanied by Z3 SMT proofs, synthesized XOR/DIMACS CNF circuits, and
+  multi-round concrete differential trail searches.
