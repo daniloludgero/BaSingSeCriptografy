@@ -120,7 +120,7 @@ class TwoRoundEvaluator:
         state = self.baseline_round_two.copy()
         if change:
             for row in range(W):
-                state[row] ^= gf_mult(int(M_CAUCHY_32[row, slot]), change)
+                state[row] ^= np.uint64(gf_mult(int(M_CAUCHY_32[row, slot]), change))
         return state
 
     def candidate(

@@ -55,7 +55,7 @@ def analyze_witness(
     left_raw = np.zeros(W, dtype=np.uint64)
     left_raw[0] = witness ^ int(key_words[0][0])
     right_raw = left_raw.copy()
-    right_raw[0] ^= 1
+    right_raw[0] ^= np.uint64(1)
 
     left_state = left_raw ^ key_words[0]
     right_state = right_raw ^ key_words[0]
@@ -102,7 +102,7 @@ def analyze_full_witness(
     left_raw = np.zeros(W, dtype=np.uint64)
     left_raw[0] = witness ^ int(key_words[0][0])
     right_raw = left_raw.copy()
-    right_raw[0] ^= 1
+    right_raw[0] ^= np.uint64(1)
     left = left_raw ^ key_words[0]
     right = right_raw ^ key_words[0]
     stats: list[tuple[int, int, int]] = []
