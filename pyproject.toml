@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "basingse-rsd-s"
+version = "0.4.1"
+description = "RSD-S (Riemann Spectral Diffusion v4) — Keyed 512-bit SPN Cryptographic Research Prototype & Formal SAT/SMT Cryptanalysis Suite"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Danilo Ludgero" }
+]
+keywords = [
+  "cryptography",
+  "cryptanalysis",
+  "diffusion",
+  "mds-matrix",
+  "cauchy-matrix",
+  "s-box",
+  "finite-fields",
+  "sat-solver",
+  "smt-solver",
+  "z3"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security :: Cryptography",
+  "Topic :: Scientific/Engineering :: Mathematics"
+]
+dependencies = [
+  "numpy>=1.26.0"
+]
+
+[project.optional-dependencies]
+smt = [
+  "z3-solver>=4.12.0"
+]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.4.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/daniloludgero/BaSingSeCriptografy"
+Repository = "https://github.com/daniloludgero/BaSingSeCriptografy.git"
+Documentation = "https://daniloludgero.github.io/BaSingSeCriptografy/"
+Issues = "https://github.com/daniloludgero/BaSingSeCriptografy/issues"
+
+[tool.setuptools]
+package-dir = {"" = "implementacao"}
+py-modules = [
+  "rsd_s_v4_final",
+  "rsd_s_v3_sbox_corrigida",
+  "rsd_s_v2_matriz_corrigida",
+  "rsd_s_v1_original",
+  "mds_real",
+  "mds_bitmatrix",
+  "mds_xor_synthesis",
+  "gf16_inverse_cnf",
+  "rsd_round_cnf",
+  "rsd_differential_cnf",
+  "analise_wide_trail",
+  "analise_trilhas_concretas",
+  "analise_duas_rodadas",
+  "busca_branch_bound",
+  "busca_diversificada"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = ["ferramentas/_vendor"]
