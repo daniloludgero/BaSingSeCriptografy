@@ -1,6 +1,6 @@
 {
   "repository": "daniloludgero/BaSingSeCriptografy",
-  "description": "Keyed 512-bit SPN cryptographic diffusion lab (GF(2^16) inversion S-box + 32x32 Cauchy MDS) with Z3 SMT & SAT/CNF proofs.",
+  "description": "Keyed 512-bit SPN cryptographic diffusion lab (GF(2^16) inversion S-box + 32x32 Cauchy MDS) with Z3 SMT & SAT proofs.",
   "homepage": "https://daniloludgero.github.io/BaSingSeCriptografy/",
   "topics": [
     "cryptography",
