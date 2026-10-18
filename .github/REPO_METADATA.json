@@ -1,0 +1,17 @@
+{
+  "repository": "daniloludgero/BaSingSeCriptografy",
+  "description": "Keyed 512-bit SPN cryptographic diffusion lab (GF(2^16) inversion S-box + 32x32 Cauchy MDS) with Z3 SMT & SAT/CNF proofs.",
+  "homepage": "https://daniloludgero.github.io/BaSingSeCriptografy/",
+  "topics": [
+    "cryptography",
+    "cryptanalysis",
+    "finite-fields",
+    "mds-matrix",
+    "s-box",
+    "sat-solver",
+    "z3",
+    "python"
+  ],
+  "license": "MIT",
+  "default_branch": "main"
+}

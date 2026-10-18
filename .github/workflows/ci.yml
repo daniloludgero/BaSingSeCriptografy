@@ -1,0 +1,78 @@
+name: CI Quality Gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-kat:
+    name: Static Analysis & KAT Vectors (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile & AST syntax check
+        run: |
+          python -m py_compile implementacao/*.py testes/*.py ferramentas/*.py
+
+      - name: Verify Known-Answer Test (KAT) vectors via CLI
+        run: |
+          python ferramentas/rsd_cli.py --json kat
+          python ferramentas/rsd_cli.py demo
+
+  unit-and-cryptanalysis-suite:
+    name: Deterministic Unit & Trail Suite (NumPy ${{ matrix.numpy-spec }})
+    runs-on: ubuntu-latest
+    needs: lint-and-kat
+    strategy:
+      fail-fast: false
+      matrix:
+        numpy-spec: ["numpy>=1.26,<2.0", "numpy>=2.0"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install NumPy matrix variant
+        run: |
+          python -m pip install --upgrade pip
+          pip install "${{ matrix.numpy-spec }}"
+
+      - name: Run full deterministic unittest suite
+        run: |
+          python -m unittest discover -s testes -p "test_*.py" -v
+
+      - name: Run statistical avalanche & MDS verification suite
+        run: |
+          python testes/suite_testes_completa.py

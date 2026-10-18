@@ -1,0 +1,30 @@
+name: Feature / Experiment Request
+description: Propose a new cryptanalysis script, solver optimization, or Web Laboratory visualization
+title: "[Feat]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Research or Engineering Motivation
+      description: What problem does this solve or what hypothesis does it test?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Implementation
+      description: Which files in `implementacao/`, `ferramentas/`, `testes/`, or `docs/` would be added or updated?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Compatibility & Honesty Verification
+      options:
+        - label: This proposal preserves backwards compatibility with `testes/vetores_v4.json`
+          required: true
+        - label: This proposal respects the scientific honesty rules in `especificacao/RESTRICOES_DE_PROJETO.md`
+          required: true

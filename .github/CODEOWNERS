@@ -1,0 +1,9 @@
+# Default owners for everything in the repository
+* @daniloludgero
+
+# Cryptographic core, specifications, and KAT vectors require lead maintainer sign-off
+/especificacao/ @daniloludgero
+/implementacao/ @daniloludgero
+/testes/vetores_v4.json @daniloludgero
+/SECURITY.md @daniloludgero
+/GOVERNANCE.md @daniloludgero

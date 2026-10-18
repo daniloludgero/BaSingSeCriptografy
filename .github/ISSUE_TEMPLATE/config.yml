@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Interactive Cryptanalysis Web Lab
+    url: https://daniloludgero.github.io/BaSingSeCriptografy/
+    about: Explore GF(2^16) inversion, Cauchy MDS diffusion, and KAT vectors in your browser
+  - name: Security & Private Vulnerability Disclosure
+    url: https://github.com/daniloludgero/BaSingSeCriptografy/blob/main/SECURITY.md
+    about: Read SECURITY.md before reporting infrastructure or supply-chain vulnerabilities

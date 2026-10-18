@@ -1,0 +1,30 @@
+name: Bug Report
+description: Report a bug in the Python implementation, CLI, CNF/SMT generators, or Web Laboratory
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal Reproduction Command
+      description: Exact command to reproduce the issue from the repository root.
+      placeholder: "python3 ferramentas/rsd_cli.py ..."
+      render: bash
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment (OS, Python version, NumPy version)
+      placeholder: "Ubuntu 24.04, Python 3.12.3, NumPy 1.26.4"
+    validations:
+      required: true
